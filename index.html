@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Green Aurea</title>
+
+    <!--Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css?family=poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--feather Icons-->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!--My Style-->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- AlpineJS -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- App -->
+    <script src="src/app.js" async></script>
+  </head>
+
+  <body>
+    <!--Navbar start-->
+    <nav class="navbar" x-data>
+      <a href="#" class="navbar-logo">Green<span>Aurea</span></a>
+
+      <div class="navbar-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#menu">Testimoni</a>
+        <a href="#products">Room</a>
+        <a href="#contact">contact</a>
+      </div>
+
+      <div class="navbar-extra">
+        <a href="#" id="Search-button"><i data-feather=""></i></a>
+        <a href="#" id="shopping-cart-button"
+          ><i data-feather="shopping-cart"></i>
+          <span
+            class="quantity-badge"
+            x-show="$store.cart.quantity"
+            x-text="$store.cart.quantity"
+          ></span>
+        </a>
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+      <!-- Search Form start -->
+      <div class="search-form">
+        <input type="search" id="search-box" placeholder="search here..." />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <!-- Search Form end -->
+
+      <!-- Shopping Cart start -->
+      <div class="shopping-cart">
+        <template x-for="(item, index) in $store.cart.items" x-keys="index">
+          <div class="cart-item">
+            <img :src="`img/products/${item.img}`" :alt="item.name" />
+            <div class="item-detail">
+              <h3 x-text="item.name"></h3>
+              <div class="item-price">
+                <span x-text="rupiah(item.price)"></span> &times;
+                <button id="remove" @click="$store.cart.remove(item.id)">
+                  &minus;
+                </button>
+                <span x-text="item.quantity"></span>
+                <button id="add" @click="$store.cart.add(item)">&plus;</button>
+                &equals;
+                <span x-text="rupiah(item.total)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem">
+          Cart is Empty
+        </h4>
+        <h4 x-show="$store.cart.items.length">
+          Total : <span x-text="rupiah($store.cart.total)"></span>
+        </h4>
+
+        <div class="form-container" x-show="$store.cart.items.length">
+          <form action="" id="checkoutForm">
+            <input
+              type="hidden"
+              name="items"
+              x-model="JSON.stringify($store.cart.items)"
+            />
+            <input type="hidden" name="total" x-model="$store.cart.total" />
+            <h5>Customer Detail</h5>
+
+            <label for="name">
+              <span>Name</span>
+              <input type="text" name="name" id="name" />
+            </label>
+
+            <label for="email">
+              <span>Email</span>
+              <input type="email" name="email" id="email" />
+            </label>
+
+            <label for="phone">
+              <span>Phone</span>
+              <input type="number" name="phone" id="phone" autocomplete="off" />
+            </label>
+
+            <button
+              class="checkout-button disabled"
+              type="submit"
+              id="checkout-button"
+              value="Checkout"
+            >
+              Checkout
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- Shopping Cart end -->
+    </nav>
+    <!--navbar end-->
+
+    <!-- Hero Section start -->
+    <section class="hero" id="home">
+      <div class="mask-container">
+        <main class="content">
+          <h1>Welcome To Hotel<span> Green Aurea</span></h1>
+          <p>
+            A place where comford and tranquility are integrated in every step
+            you take.
+          </p>
+        </main>
+      </div>
+    </section>
+    <!-- Hero Section end -->
+
+    <!--About Section start -->
+    <section id="about" class="about">
+      <h2><span>About</span> Us</h2>
+
+      <div class="row">
+        <div class="about-img">
+          <img src="img/12.jpg" alt="Tentang Kami" />
+        </div>
+        <div class="content">
+          <h3>Why should you choose our Hotel?</h3>
+          <p>
+            Hotel Green Aurea is a place where natural beauty meets a calming
+            moderen touch. With beautiful blue hues and elegant design in every
+            room, we create an atmosphere that makes quest feel relaxed from the
+            moment they step inside.
+          </p>
+          <p>
+            Here, you can enjoy tranquility, coolness, and beauty blended in
+            perfect harmony, We believe that true comform is born from a
+            peaceful atmosphere-and at Green Aurea, we bring that tranquility to
+            life.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!--About Section end -->
+
+    <!--Menu Section start -->
+    <section id="menu" class="menu">
+      <h2><span>Our </span> Testimoni</h2>
+      <p>
+        Following are the opinions and experiences of guests who have entrusted
+        their comfort to us.
+      </p>
+
+      <div class="row">
+        <div class="menu-card">
+          <img src="img/menu/2..jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- dewi-</h3>
+          <p class="menu-card-price">Tempatnya sangat nyaman</p>
+          <p class="menu-card-price">Recommended!</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div>
+
+        <div class="menu-card">
+          <img src="img/menu/1..jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- indrawati-</h3>
+          <p class="menu-card-price">Kamar luas dan wangi</p>
+          <p class="menu-card-price">bikin betah banget!</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div>
+
+        <div class="menu-card">
+          <img src="img/menu/3.jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- upin -</h3>
+          <p class="menu-card-price">Staf profesional, proses</p>
+          <p class="menu-card-price">check-in cepat, hotelnya bersih</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div>
+
+        <div class="menu-card">
+          <img src="img/menu/4.jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- fatimah -</h3>
+          <p class="menu-card-price">Rasanya seperti di rumah</p>
+          <p class="menu-card-price">sendiri, semua staf perhatian.</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div>
+
+        <div class="menu-card">
+          <img src="img/menu/5.jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- desi -</h3>
+          <p class="menu-card-price">Suasana tenang, cocok</p>
+          <p class="menu-card-price">untuk istirahat</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div>
+
+        <!-- <div class="menu-card">
+          <img src="img/menu/6.jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- rahmat -</h3>
+          <p class="menu-card-price">Harga terjangkau dengan fasilitas</p>
+          <p class="menu-card-price">bintang lima. Mantap!</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div> -->
+
+        <div class="menu-card">
+          <img src="img/menu/7.jpg" alt="Espresso" class="menu-card-img" />
+          <h3 class="menu-card-title">- rahmat -</h3>
+          <p class="menu-card-price">Benar-benar recommended</p>
+          <p class="menu-card-price">Serasa d hotel mahal.</p>
+          <p class="star">
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+            <svg
+              width="24"
+              height="24"
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <use href="img/feather-sprite.svg#star" />
+            </svg>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!--Menu Section end -->
+
+    <!-- Products Section start -->
+    <section class="products" id="products" x-data="products">
+      <h2><span>Reservation</span> Room</h2>
+      <p>
+        Enjoy a pleasant stay with us. Choose your favorite room and book now
+        for a hassle-free vacation!
+      </p>
+
+      <div class="row">
+        <template x-for="(item, index) in items" x-key="index">
+          <div class="product-card">
+            <div class="product-icons">
+              <a href="#" @click.prevent="$store.cart.add(item)">
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#shopping-cart" />
+                </svg>
+              </a>
+              <a href="#" class="item-detail-button">
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#eye" />
+                </svg>
+              </a>
+            </div>
+            <div class="product-image">
+              <img :src="`img/products/${item.img}`" :alt="item.name" />
+            </div>
+            <div class="product-content">
+              <h3 x-text="item.name"></h3>
+              <div class="product-stars">
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="img/feather-sprite.svg#star" />
+
+                  <span>9.5/10</span>
+                </svg>
+              </div>
+              <div class="product-price">
+                <span x-text="rupiah(item.price)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+    <!-- Products Section end -->
+
+    <!-- contact section start -->
+    <section id="contact" class="contact">
+      <h2><span>Contact</span> Us</h2>
+      <p>
+        We're ready to assist you anytime. Contact us for more information about
+        booking a room, our facilities, or our hotel services.
+      </p>
+
+      <div class="row">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d599.3896874282929!2d120.21772366984474!3d-3.034733371438854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d91593a99ae2f4f%3A0x2db82a60706a07ed!2sUD.%20ALFHARABI!5e0!3m2!1sid!2sid!4v1762074673838!5m2!1sid!2sid"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="map"
+        ></iframe>
+
+        <form action="">
+          <div class="input-group">
+            <i data-feather="user"></i>
+            <input type="text" placeholder="nama" />
+          </div>
+          <div class="input-group">
+            <i data-feather="mail"></i>
+            <input type="text" placeholder="email" />
+          </div>
+          <div class="input-group">
+            <i data-feather="phone"></i>
+            <input type="text" placeholder="no hp" />
+          </div>
+          <button type="submit" class="btn">kirim pesan</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- contact section end -->
+
+    <!-- footer start -->
+    <footer>
+      <div class="socials">
+        <a href="#"><i data-feather="instagram"></i></a>
+        <a href="#"><i data-feather="twitter"></i></a>
+        <a href="#"><i data-feather="facebook"></i></a>
+      </div>
+
+      <div class="links">
+        <a href="#home">Home</a>
+        <a href="#about">About </a>
+        <a href="#menu">Testimoni</a>
+        <a href="#contact">Contack</a>
+      </div>
+
+      <div class="credit">
+        <p>
+          created by
+          <a
+            href="
+          "
+            >Widayanti</a
+          >. | &copy; 2023.
+        </p>
+      </div>
+    </footer>
+    <!-- footer end -->
+
+    <!-- Modal Box Item Detail start -->
+    <div class="item-detail-modal">
+      <div class="modal-container">
+        <a href="#" class="close-icon"><i data-feather="x"></i></a>
+        <div class="modal-content">
+          <!-- <img src="img/products/1.jpg" alt="Product 1" /> -->
+          <div class="product-content">
+            <h3>Standard Room</h3>
+            <p>
+              Standard Rooms offer basic comfort at an affordable price.
+              Designed for guests seeking a clean, comfortable, and practical
+              place to rest.
+            </p>
+            <div class="product-stars">
+              Facilities: AC, TV, Wi-Fi, hot water bathroom, mineral water,
+              toiletries.
+            </div>
+            <div class="product-price">IDR 200K</div>
+            <!-- <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>add to cart</span></a
+            > -->
+          </div>
+
+          <div class="product-content">
+            <h3>Bundling Room</h3>
+            <p>
+              A complete option for guests seeking a hassle-free, all-inclusive
+              stay. This package combines a quality room with additional
+              amenities such as dining, tours, or spa services.
+            </p>
+            <div class="product-stars">
+              Facilities: Room + breakfast & dinner / spa / tour tickets + pool
+              access & free Wi-Fi.
+            </div>
+            <div class="product-price">IDR 300K</div>
+            <!-- <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>add to cart</span></a
+            > -->
+          </div>
+
+          <div class="product-content">
+            <h3>Family Room</h3>
+            <p>
+              Family Room provides comfort for all family members with spacious
+              space and complete facilities for both children and adults.
+            </p>
+            <div class="product-stars">
+              Facilities: 2 king beds, sitting area, TV, mini fridge,
+              kitchenette, Wi-Fi, room service.
+            </div>
+            <div class="product-price">IDR 450K</div>
+            <!-- <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>add to cart</span></a
+            > -->
+          </div>
+
+          <div class="product-content">
+            <h3>VVIP Room</h3>
+            <p>
+              The most luxurious rooms, featuring elegant design, exclusive
+              amenities, and priority service, are designed for special guests
+              seeking maximum comfort and privacy.
+            </p>
+            <div class="product-stars">
+              Amenities:Premium king bed, private living and dining area,
+              Jacuzzi or luxurious bathtub, fully stocked minibar, 55-inch smart
+              TV, safe, super-fast Wi-Fi, personal butler service, exclusive
+              breakfast and dinner, and complimentary access to the pool and
+              spa.
+            </div>
+            <div class="product-price">IDR 600K</div>
+            <!-- <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>add to cart</span></a
+            > -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Box Item Detail end -->
+
+    <!--feather icons-->
+    <script>
+      feather.replace();
+    </script>
+
+    <!--My Javascript-->
+    <script src="js/script.js"></script>
+  </body>
+</html>
